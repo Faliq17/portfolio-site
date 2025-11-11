@@ -359,7 +359,7 @@ header nav ul li a:not(.active-link):hover::after {
 /* 🟢 FIX APPLIED: CORRECTED DESKTOP EVEN DOT (Left Side Content) */
 .timeline-item:nth-child(even) .timeline-dot {
     /* Position 6px to the right of the 50% line to center the dot on the bar */
-    right: calc(50% - 210px);
+    right: calc(50% - 212px);
     left: auto;
     margin: 0; /* Ensures no extra margin pushes it off */
 }
