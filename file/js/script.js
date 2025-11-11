@@ -70,8 +70,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const headerElement = document.getElementById('site-header');
     if (headerElement) {
-        // 🚨 CRITICAL FIX: The path must include '../' because JS is in a subdirectory (e.g., /file/js/script.js)
-        fetch('../navtemplate.html')
+        // *** FIX: Corrected file path back to 'navtemplate.html' ***
+        fetch('navtemplate.html')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok: ' + response.statusText);
@@ -142,9 +142,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Use IntersectionObserver for modern browsers, but keep scroll listener for compatibility
     window.addEventListener('scroll', checkVisibility);
-    checkVisibility(); // Initial check on load
+    checkVisibility();
 
     // =======================================================
     // 4. Modal Lightbox Functions
@@ -153,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const normalizePath = (url) => {
         const a = document.createElement('a');
         a.href = url;
-        // This removes the domain/leading slashes and unnecessary relative path indicators
         return a.pathname.replace(/^\/+/g, '').replace(/(\.\.\/)+/g, '');
     };
 
@@ -186,13 +184,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentModalImageSet.push(img.src);
             });
         } else {
-            // Fallback for single image, should not happen with your current HTML structure
             currentModalImageSet.push(clickedImgSrc);
         }
 
         const clickedPath = normalizePath(clickedImgSrc);
         let startIndex = currentModalImageSet.findIndex(resolvedUrl => {
-            // Find the index of the image whose normalized path ends with the clicked image's normalized path
             return normalizePath(resolvedUrl).endsWith(clickedPath);
         });
 
@@ -217,7 +213,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (modal) {
-        // Close modal when clicking outside the image
         modal.addEventListener('click', function(event) {
             if (event.target === modal) {
                 closeModal();
