@@ -211,7 +211,7 @@ header nav ul li a:not(.active-link):hover::after {
     margin-left: 20px;
 }
 
-/* 🚨 NEW FIX: Ensures the icon is hidden on ALL desktop views */
+/* 🚨 FIX: Ensures the icon is hidden on ALL desktop views (used in navtemplate.html) */
 .hidden-desktop {
     display: none !important;
 }
@@ -637,7 +637,7 @@ footer {
 
     /* Experience Timeline - Single Column FIX */
     .timeline::before {
-        left: 20px; /* Move vertical line to the left */
+        left: 20px; /* Vertical line position */
         transform: none;
     }
     .timeline-item {
@@ -650,22 +650,23 @@ footer {
     /* Reset two-column positioning */
     .timeline-item:nth-child(odd),
     .timeline-item:nth-child(even) {
-        margin-left: 40px; /* Offset from the main line */
+        margin-left: 40px; /* Offset content from the main line */
         width: calc(100% - 40px);
         transform: translateX(30px); /* Keep fade-in offset */
     }
 
-    /* Re-position dots relative to the new single line (20px from left) */
+    /* 🟢 FIX APPLIED: Timeline Dot Alignment for Mobile */
     .timeline-item .timeline-dot {
-        left: 20px;
+        left: 20px; /* Position the dot at the same line as the vertical bar */
         right: auto;
         margin: 0;
+        /* Centers the 12px dot perfectly on the 2px line at 20px */
         transform: translate(-50%, 0);
     }
 
     .timeline-item:nth-child(odd) .timeline-dot,
     .timeline-item:nth-child(even) .timeline-dot {
-        left: 20px;
+        left: 20px; /* Ensure both sides use this corrected left value */
         right: auto;
     }
 
@@ -704,10 +705,13 @@ footer {
         width: calc(100% - 30px);
     }
     .timeline::before {
-        left: 10px;
+        left: 10px; /* Move vertical line further left on very small screens */
     }
-    .timeline-item .timeline-dot {
-        left: 10px;
+    /* 🟢 FIX APPLIED: Dot alignment for very small screens */
+    .timeline-item .timeline-dot,
+    .timeline-item:nth-child(odd) .timeline-dot,
+    .timeline-item:nth-child(even) .timeline-dot {
+        left: 10px; /* Set dot to the same position as the bar (10px) */
     }
 
     /* Contact Links */
