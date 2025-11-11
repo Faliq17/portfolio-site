@@ -1,17 +1,28 @@
-/* General Styling */
+/* =======================================================
+ * General Setup & Variables ⚙️
+ * ======================================================= */
 
 :root {
+    /* Color Palette (Dark Mode Default) */
     --bg-color: #000000;
     --box-bg: #111111;
     --text-color: #e0e0e0;
     --text-light: #a0a0a0;
-    --border-color: rgba(0, 255, 170, 0.1);
-    --shadow-color: rgba(0, 0, 0, 0.5);
+
+    /* Neon/Accent Colors */
     --neon-blue: #35374B;
     --neon-pink: #ff007f;
     --neon-green: #00ffaa;
+
+    /* Borders & Shadows */
+    --border-color: rgba(0, 255, 170, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+
+    /* Transitions */
+    --standard-transition: 0.3s ease;
 }
 
+/* Light Mode Overrides (Target HTML root) */
 html.light-mode {
     --bg-color: #f4f4f4;
     --box-bg: #ffffff;
@@ -19,20 +30,16 @@ html.light-mode {
     --text-light: #666666;
     --border-color: rgba(0, 0, 0, 0.1);
     --shadow-color: rgba(0, 0, 0, 0.1);
-    --neon-blue: #00796b;
+    --neon-blue: #00796b; /* Adjusted for better contrast in light mode */
     --neon-pink: #c2185b;
     --neon-green: #00796b;
 }
 
-* {
+/* Global Reset & Base */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-main {
-    flex-grow: 1;
-    padding-top: 70px;
 }
 
 body {
@@ -41,7 +48,7 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     scroll-behavior: smooth;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color var(--standard-transition), color var(--standard-transition);
     text-align: center;
     overflow-x: hidden;
     display: flex;
@@ -49,6 +56,7 @@ body {
     min-height: 100vh;
 }
 
+/* Page Structure */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -59,12 +67,24 @@ body {
     padding: 80px 0 120px 0;
 }
 
+main {
+    flex-grow: 1;
+    /* Offset for fixed header */
+    padding-top: 70px;
+}
+
+
+/* =======================================================
+ * Typography & UI Elements ✏️
+ * ======================================================= */
+
 h1, h2, h3 {
     color: var(--neon-green);
     margin-bottom: 20px;
     font-weight: 500;
 }
 
+/* Section Header Styling */
 h2 {
     font-size: 2.5em;
     position: relative;
@@ -82,12 +102,13 @@ h2::after {
     width: 60px;
     height: 3px;
     background-color: var(--neon-pink);
+    border-radius: 2px;
 }
 
 a {
     color: var(--neon-blue);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color var(--standard-transition);
 }
 
 a:hover {
@@ -101,7 +122,7 @@ a:hover {
     padding: 12px 25px;
     border-radius: 3px;
     margin-top: 20px;
-    transition: background-color 0.3s ease;
+    transition: background-color var(--standard-transition), transform var(--standard-transition);
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 600;
@@ -109,19 +130,22 @@ a:hover {
 
 .btn:hover {
     background-color: var(--neon-pink);
+    transform: translateY(-2px);
 }
 
-/* Header and Navigation */
+
+/* =======================================================
+ * Header & Navigation 🧭
+ * ======================================================= */
 
 header {
-    background-color: rgba(var(--bg-color), 0.9);
+    background-color: rgba(var(--bg-color, 0, 0, 0), 0.9); /* Fallback for older browsers */
+    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent); /* Modern approach */
     padding: 12px 0;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
-    box-shadow: none;
-    border-top: none;
     backdrop-filter: blur(5px);
 }
 
@@ -138,12 +162,6 @@ nav {
     font-size: 1.8em;
     font-weight: 700;
     color: var(--neon-green);
-    z-index: 1001;
-}
-
-.nav-icons {
-    display: flex;
-    align-items: center;
 }
 
 nav ul {
@@ -161,14 +179,11 @@ nav ul li a {
     font-weight: 500;
     font-size: 1.1em;
     position: relative;
+    /* Space for the active indicator */
     padding-bottom: 8px;
 }
 
-.active-link {
-    font-weight: 700;
-    color: var(--neon-pink) !important;
-}
-
+/* Active Link Indicator */
 header nav ul li a::after {
     content: '';
     position: absolute;
@@ -180,36 +195,62 @@ header nav ul li a::after {
     border-radius: 2px;
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 0.3s ease;
+    transition: transform var(--standard-transition);
 }
 
+.active-link {
+    font-weight: 700;
+    color: var(--neon-pink) !important;
+}
+
+/* Show indicator only on the active link */
 header nav ul li a.active-link::after {
     transform: scaleX(1);
 }
 
+/* Optional: Hover effect */
 header nav ul li a:not(.active-link):hover::after {
     transform: scaleX(0.5);
     opacity: 0.5;
 }
 
-
-.menu-toggle {
-    display: none;
-    font-size: 1.5rem;
-    cursor: pointer;
+/* Mode Toggle Button */
+#mode-toggle {
+    background: none;
+    border: none;
     color: var(--text-color);
-    z-index: 1001;
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 0 5px;
+    transition: color var(--standard-transition), transform var(--standard-transition);
     margin-left: 20px;
 }
 
-/* FIX: Ensures the icon is hidden on ALL desktop views */
-.hidden-desktop {
-    display: none !important;
+#mode-toggle:hover {
+    color: var(--neon-pink);
+    transform: scale(1.1);
 }
 
 
-/* --- Home Page Profile Picture Styles --- */
+/* =======================================================
+ * Home Section (Hero) 🏠
+ * ======================================================= */
 
+#home {
+    /* Vertical centering: calc(Viewport Height - Header Height) */
+    min-height: calc(100vh - 70px);
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.home-content {
+    width: 100%;
+    text-align: center;
+    padding: 50px 0;
+}
+
+/* Profile Picture with Neon Glow Effect */
 .profile-pic {
     margin: 0 auto 30px auto;
     display: block;
@@ -218,10 +259,10 @@ header nav ul li a:not(.active-link):hover::after {
     overflow: hidden;
     border-radius: 50%;
 
+    /* Initial Glow */
     background: radial-gradient(circle at center,
                 rgba(0, 255, 170, 0.15) 0%,
-                rgba(0, 0, 0, 0) 70%
-            );
+                rgba(0, 0, 0, 0) 70%);
     background-color: var(--box-bg);
     opacity: 0.9;
     box-shadow: 0 0 20px rgba(0, 255, 170, 0.2);
@@ -233,79 +274,65 @@ header nav ul li a:not(.active-link):hover::after {
     width: 100%;
     height: 100%;
     object-fit: cover;
-
     border-radius: 50%;
+    /* Inner Glow */
     box-shadow: 0 0 15px rgba(0, 255, 170, 0.6), 0 0 30px rgba(0, 255, 170, 0.3);
+    /* Using translate3d for GPU-accelerated transition */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Hover effects */
 .profile-pic img:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) translate3d(0, 0, 0);
     box-shadow: 0 0 20px var(--neon-pink), 0 0 40px rgba(255, 0, 127, 0.4);
 }
 
 .profile-pic:hover {
     background: radial-gradient(circle at center,
                 rgba(255, 0, 127, 0.2) 0%,
-                rgba(0, 0, 0, 0) 70%
-            );
+                rgba(0, 0, 0, 0) 70%);
     opacity: 1;
     box-shadow: 0 0 30px rgba(255, 0, 127, 0.4);
 }
-/* Mode Toggle Button */
 
-#mode-toggle {
-    background: none;
-    border: none;
-    color: var(--text-color);
-    cursor: pointer;
-    font-size: 1.5rem;
-    padding: 0 5px;
-    transition: color 0.3s ease, transform 0.3s ease;
-    margin-left: 20px;
-    z-index: 1001;
+
+/* =======================================================
+ * Scroll Animation Styles (Opacity & Transform) 🎬
+ * ======================================================= */
+
+/* Base transition for scroll-in items */
+.timeline-item, .skill-category, .project-card {
+    opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow var(--standard-transition), background-color var(--standard-transition);
 }
 
-#mode-toggle:hover {
-    color: var(--neon-pink);
-    transform: scale(1.1);
+.is-visible {
+    opacity: 1;
+    transform: translateY(0) !important;
 }
 
-/* --- Home Section --- */
 
-#home {
-    min-height: calc(100vh - 70px);
-    display: flex;
-    align-items: center;
-    padding: 0;
-}
+/* =======================================================
+ * Timeline Section (Experience) ⏳
+ * ======================================================= */
 
-.home-content {
-    width: 100%;
-    text-align: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
-
-/* --- Content Sections --- */
-
-/* Timeline Section (Experience) - Base/Desktop styles */
 .timeline {
     position: relative;
     padding-top: 20px;
-    padding-bottom: 120px;
-    max-width: 800px;
-    margin: 0 auto;
+    padding-bottom: 120px; /* Reduced vertical padding */
 }
+
+/* Vertical Line */
 .timeline::before {
     content: '';
     position: absolute;
     left: 50%;
     width: 2px;
-    height: 100%;
+    height: 100%; /* Changed to 100% for stability */
     background-color: var(--neon-blue);
     transform: translateX(-50%);
 }
+
 .timeline-item {
     background-color: var(--box-bg);
     border: 1px solid var(--border-color);
@@ -314,131 +341,349 @@ header nav ul li a:not(.active-link):hover::after {
     margin-bottom: 40px;
     padding: 20px;
     border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    text-align: left;
+    position: relative; /* Needed for dot positioning */
 }
-.timeline-item:hover { transform: scale(1.03); }
+
+.timeline-item:hover {
+    transform: scale(1.03) translateZ(0);
+}
+
+/* Alternating Left/Right positioning */
 .timeline-item:nth-child(odd) {
     margin-left: calc(50% + 40px);
-    text-align: left;
-    transform: translateX(30px);
+    transform: translateX(30px); /* Initial state for scroll-in */
 }
 .timeline-item:nth-child(even) {
     margin-right: calc(50% + 40px);
-    margin-left: 0;
     float: left;
-    text-align: left;
-    transform: translateX(-30px);
+    transform: translateX(-30px); /* Initial state for scroll-in */
 }
-.timeline-item:nth-child(odd).is-visible, .timeline-item:nth-child(even).is-visible {
-    transform: translateX(0);
-    opacity: 1;
-}
-.timeline-item:nth-child(odd):after { content: ""; display: block; clear: both; }
 
+/* Dot on the center line */
 .timeline-dot {
     position: absolute;
     width: 12px;
     height: 12px;
     background-color: var(--neon-pink);
     border-radius: 50%;
-    top: 30px;
-    transform: translateY(0);
+    top: 30px; /* Position dot near the top of the item */
     box-shadow: 0 0 8px rgba(255, 0, 127, 0.9);
     z-index: 1;
 }
-
-/* 🟢 FIX APPLIED: CORRECTED DESKTOP ODD DOT (Right Side Content) */
 .timeline-item:nth-child(odd) .timeline-dot {
-    /* Position 6px to the left of the 50% line to center the dot on the bar */
-    left: calc(50% - 200px);
-    right: auto;
-    margin: 0; /* Ensures no extra margin pushes it off */
+    left: -61px; /* Center dot on the line */
 }
-
-/* 🟢 FIX APPLIED: CORRECTED DESKTOP EVEN DOT (Left Side Content) */
 .timeline-item:nth-child(even) .timeline-dot {
-    /* Position 6px to the right of the 50% line to center the dot on the bar */
-    right: calc(50% - 210px);
-    left: auto;
-    margin: 0; /* Ensures no extra margin pushes it off */
+    right: -61px; /* Center dot on the line */
 }
 
-.timeline-content .duration { color: var(--text-light); font-size: 0.9em; margin-bottom: 10px; }
-.timeline-content ul { list-style: none; padding-left: 0; }
-.timeline-content ul li { margin-bottom: 5px; position: relative; padding-left: 15px; text-align: inherit; }
-.timeline-content ul li::before { content: '→'; color: var(--neon-pink); position: absolute; left: 0; }
+/* Content details */
+.timeline-content .duration {
+    color: var(--text-light);
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+.timeline-content ul {
+    list-style: none;
+    padding-left: 0;
+}
+.timeline-content ul li {
+    margin-bottom: 5px;
+    position: relative;
+    padding-left: 15px;
+    text-align: inherit;
+}
+.timeline-content ul li::before {
+    content: '→';
+    color: var(--neon-pink);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
 
-/* ... (Omitted other sections for brevity, assume they are correct) ... */
+/* Clear float for proper layout */
+.timeline::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/* =======================================================
+ * Skills Section 🛠️
+ * ======================================================= */
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin: 40px auto 0;
+    max-width: 900px;
+}
+
+.skill-category {
+    padding: 25px;
+    background-color: var(--box-bg);
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--shadow-color);
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    transform: translateY(30px); /* Initial state for scroll-in */
+    will-change: transform, opacity;
+}
+
+/* Category hover effect (subtle background fill) */
+.skill-category::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--neon-blue);
+    opacity: 0.5;
+    transition: height 0.3s ease, opacity 0.3s ease;
+    z-index: 0;
+}
+.skill-category:hover::before {
+    height: 100%;
+    opacity: 0.05;
+}
+
+.skill-category h3 {
+    position: relative;
+    z-index: 1;
+}
+
+.skill-category ul { list-style: none; padding: 0; }
+.skill-category ul li {
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border-color);
+    position: relative;
+    z-index: 1;
+}
+.skill-category ul li:last-child { border-bottom: none; }
+
+
+/* =======================================================
+ * Projects Section 📂
+ * ======================================================= */
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px auto 0;
+    max-width: 1000px; /* Increased max-width for projects */
+}
+
+.project-card {
+    background-color: var(--box-bg);
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--shadow-color);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(30px); /* Initial state for scroll-in */
+    will-change: transform, opacity, box-shadow;
+}
+
+/* Hover lift and glow */
+.project-card:hover {
+    transform: translateY(-5px) scale(1.01) translateZ(0);
+    box-shadow: 0 10px 20px var(--shadow-color), 0 0 15px var(--neon-pink);
+    border-color: var(--neon-pink);
+}
+
+.project-content-trigger {
+    display: block;
+    flex-grow: 1;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+.project-content-trigger h3 {
+    padding: 15px 20px 10px;
+    margin: 0;
+    color: var(--neon-green);
+    transition: color var(--standard-transition);
+}
+.project-content-trigger p {
+    color: var(--text-light);
+    margin: 15px 20px 20px;
+    transition: color var(--standard-transition);
+}
+
+.project-card:hover .project-content-trigger h3 {
+    color: var(--neon-pink);
+}
+.project-card:hover .project-content-trigger p {
+    color: var(--text-color);
+}
+
+/* Hide the slider container which holds all images for the lightbox */
+.project-card .slider-container {
+    display: none;
+}
+
+
+/* =======================================================
+ * Modal Lightbox (Carousel) 🖼️
+ * ======================================================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding-top: 20px;
+}
+
+@keyframes zoom {
+    from {transform: translate(-50%, -50%) scale(0.1);}
+    to {transform: translate(-50%, -50%) scale(1);}
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* Use translate3d for GPU acceleration */
+    transform: translate(-50%, -50%);
+
+    width: 90%;
+    max-width: 1000px;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 5px;
+    animation-name: zoom;
+    animation-duration: 0.4s; /* Faster animation */
+}
+
+.caption-container {
+    text-align: center;
+    color: #ccc;
+    padding: 10px;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: absolute;
+    top: calc(50% + (85vh / 2) + 20px); /* Positioning below the image */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2002;
+    font-size: 1.1em;
+}
+
+
+.close-btn {
+    position: absolute; top: 15px; right: 35px; color: #f1f1f1;
+    font-size: 40px; font-weight: bold; cursor: pointer; z-index: 2002;
+    transition: color var(--standard-transition);
+}
+.close-btn:hover { color: var(--neon-pink); }
+
+/* Carousel Controls */
+.lightbox-prev, .lightbox-next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -50px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    transition: 0.6s ease;
+    user-select: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 2001;
+}
+
+.lightbox-prev {
+    left: 0;
+    border-radius: 0 3px 3px 0;
+}
+.lightbox-next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+.lightbox-prev:hover, .lightbox-next:hover {
+    background-color: var(--neon-pink);
+}
+
+/* Media Query for smaller controls */
+@media only screen and (max-width: 700px){
+    .lightbox-prev, .lightbox-next {
+        padding: 10px;
+        margin-top: -30px;
+        font-size: 16px;
+    }
+}
+
+
+/* =======================================================
+ * Contact Section 📧
+ * ======================================================= */
+
+.contact-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 40px auto;
+    max-width: 800px;
+}
+
+.contact-links a {
+    background-color: var(--box-bg);
+    border: 1px solid var(--border-color);
+    padding: 15px 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    color: var(--text-color);
+    transition: background-color var(--standard-transition), transform var(--standard-transition), border-color var(--standard-transition), color var(--standard-transition);
+    font-weight: 500;
+}
+
+.contact-links a:hover {
+    background-color: color-mix(in srgb, var(--neon-green) 10%, transparent);
+    border-color: var(--neon-pink);
+    color: var(--neon-pink);
+    transform: translateY(-3px) translateZ(0);
+}
+
+.contact-links i {
+    font-size: 1.5em;
+    margin-right: 10px;
+    color: var(--neon-green);
+    transition: color var(--standard-transition);
+}
+
+.contact-links a:hover i {
+    color: var(--neon-pink);
+}
+
+/* =======================================================
+ * Footer 🦶
+ * ======================================================= */
 
 footer {
     padding: 30px 0;
     background-color: var(--box-bg);
     color: var(--text-light);
     border-top: 1px solid var(--neon-green);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    transition: background-color var(--standard-transition), color var(--standard-transition), border-color var(--standard-transition);
     margin-top: auto;
-}
-
-/* =======================================================
-   Responsive Design (Media Queries) 📱
-   ======================================================= */
-
-/* 1. Tablet View (Max-width 900px) */
-@media (max-width: 900px) {
-    /* ... (Omitted other sections for brevity) ... */
-
-    /* Experience Timeline - Single Column FIX */
-    .timeline::before {
-        left: 20px; /* Vertical line position */
-        transform: none;
-    }
-    .timeline-item {
-        width: 90%;
-        margin: 0 0 30px 0;
-        float: none;
-        text-align: left !important;
-    }
-
-    .timeline-item:nth-child(odd),
-    .timeline-item:nth-child(even) {
-        margin-left: 40px;
-        width: calc(100% - 40px);
-        transform: translateX(30px);
-    }
-
-    /* 🟢 FIX APPLIED: Timeline Dot Alignment for Mobile (900px) */
-    .timeline-item .timeline-dot {
-        left: -40px; /* Position the dot at the same line as the vertical bar */
-        right: auto;
-        margin: 0;
-        transform: translate(-50%, 0); /* Centers the 12px dot perfectly on the 20px line */
-    }
-
-    .timeline-item:nth-child(odd) .timeline-dot,
-    .timeline-item:nth-child(even) .timeline-dot {
-        left: -40px; /* Ensure both sides use this corrected left value */
-        right: auto;
-    }
-
-    .timeline-item.is-visible {
-        transform: translateX(0);
-    }
-}
-
-/* 2. Mobile Phone View (Max-width 576px) */
-@media (max-width: 576px) {
-    /* ... (Omitted other sections for brevity) ... */
-
-    /* Experience Timeline Refinement (Narrower screen) */
-    .timeline::before {
-        left: 5px; /* Vertical line further left on very small screens */
-    }
-
-    /* 🟢 FIX APPLIED: Dot alignment for very small screens (576px) */
-    .timeline-item .timeline-dot,
-    .timeline-item:nth-child(odd) .timeline-dot,
-    .timeline-item:nth-child(even) .timeline-dot {
-        left: -20px; /* Set dot to the same position as the bar (10px) */
-    }
 }
