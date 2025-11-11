@@ -351,7 +351,7 @@ header nav ul li a:not(.active-link):hover::after {
 /* 🟢 FIX APPLIED: CORRECTED DESKTOP ODD DOT (Right Side Content) */
 .timeline-item:nth-child(odd) .timeline-dot {
     /* Position 6px to the left of the 50% line to center the dot on the bar */
-    left: calc(50% - 10px);
+    left: calc(50% - 50px);
     right: auto;
     margin: 0; /* Ensures no extra margin pushes it off */
 }
@@ -359,7 +359,7 @@ header nav ul li a:not(.active-link):hover::after {
 /* 🟢 FIX APPLIED: CORRECTED DESKTOP EVEN DOT (Left Side Content) */
 .timeline-item:nth-child(even) .timeline-dot {
     /* Position 6px to the right of the 50% line to center the dot on the bar */
-    right: calc(50% - 10px);
+    right: calc(50% - 50px);
     left: auto;
     margin: 0; /* Ensures no extra margin pushes it off */
 }
@@ -390,7 +390,7 @@ footer {
 
     /* Experience Timeline - Single Column FIX */
     .timeline::before {
-        left: 10px; /* Vertical line position */
+        left: 5px; /* Vertical line position */
         transform: none;
     }
     .timeline-item {
@@ -409,7 +409,7 @@ footer {
 
     /* 🟢 FIX APPLIED: Timeline Dot Alignment for Mobile (900px) */
     .timeline-item .timeline-dot {
-        left: 10px; /* Position the dot at the same line as the vertical bar */
+        left: 5px; /* Position the dot at the same line as the vertical bar */
         right: auto;
         margin: 0;
         transform: translate(-50%, 0); /* Centers the 12px dot perfectly on the 20px line */
@@ -417,7 +417,7 @@ footer {
 
     .timeline-item:nth-child(odd) .timeline-dot,
     .timeline-item:nth-child(even) .timeline-dot {
-        left: 10px; /* Ensure both sides use this corrected left value */
+        left: 5px; /* Ensure both sides use this corrected left value */
         right: auto;
     }
 
