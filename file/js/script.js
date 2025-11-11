@@ -70,8 +70,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const headerElement = document.getElementById('site-header');
     if (headerElement) {
-        // *** FIX: Corrected file path back to 'navtemplate.html' ***
-        fetch('navtemplate.html')
+        // *** REVERTED FIX: Using original path that was working for local environment ***
+        fetch('navtemplate.html') // <--- THIS LINE IS REVERTED
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok: ' + response.statusText);
