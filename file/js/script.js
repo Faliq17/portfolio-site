@@ -1,4 +1,4 @@
-/* --- js/script.js - FINAL STABLE VERSION WITH THEME AND STABILITY FIXES --- */
+/* --- js/script.js - FINAL STABLE VERSION WITH THEME AND RESPONSIVENESS FIXES --- */
 
 // --- Global Variables for Modal Carousel Tracking ---
 let currentModalImageSet = [];
@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // =======================================================
     // 0. Global Element Initialization
     // =======================================================
-    // FIX: Reference the root HTML element for theme class application
     const rootElement = document.documentElement;
     const items = document.querySelectorAll('.timeline-item, .skill-category, .project-card');
 
@@ -20,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById("image-modal");
     const modalImg = document.getElementById("modal-img");
     const captionText = document.getElementById("caption");
-
 
     // =======================================================
     // 1. Dark/Light Mode Toggle Functionality
@@ -45,10 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const toggleBtn = document.getElementById('mode-toggle');
 
         if (savedMode) {
-            // Apply the saved theme and set the correct icon
             setMode(savedMode);
         } else {
-            // Default to dark mode based on initial CSS
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
                 setMode('light');
             } else {
@@ -69,12 +65,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // =======================================================
-    // 2. Navigation Loader and Active Link Setting
+    // 2. Navigation Loader, Active Link, and Mobile Toggle
     // =======================================================
 
     const headerElement = document.getElementById('site-header');
     if (headerElement) {
-        // FIX: Corrected file path to 'navtemplate.html'
+        // *** FIX: Corrected file path back to 'navtemplate.html' ***
         fetch('navtemplate.html')
             .then(response => {
                 if (!response.ok) {
@@ -85,24 +81,48 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(html => {
                 headerElement.innerHTML = html;
 
-                // Set the active link after the nav is loaded
-                const currentPath = window.location.pathname.split('/').pop();
                 const navLinks = headerElement.querySelectorAll('nav a');
+                const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+                const navUl = headerElement.querySelector('nav ul');
 
+                // --- Active Link Setting ---
+                const currentPath = window.location.pathname.split('/').pop();
                 navLinks.forEach(link => {
                     const linkPath = link.getAttribute('href').split('/').pop();
 
                     if (linkPath === currentPath || (currentPath === '' && linkPath === 'index.html')) {
                         link.classList.add('active-link');
                     }
+
+                    // Close menu after clicking a link (important for mobile UX)
+                    link.addEventListener('click', () => {
+                        if (navUl && navUl.classList.contains('nav-open')) {
+                            navUl.classList.remove('nav-open');
+                            mobileMenuToggle.classList.remove('fa-times');
+                            mobileMenuToggle.classList.add('fa-bars');
+                        }
+                    });
                 });
 
-                // Initialize the mode toggle functionality now that the button exists in the DOM
+                // --- Mobile Menu Toggle Handler ---
+                if (mobileMenuToggle && navUl) {
+                    mobileMenuToggle.addEventListener('click', () => {
+                        navUl.classList.toggle('nav-open');
+                        // Toggle icon from bars to X and vice-versa
+                        if (navUl.classList.contains('nav-open')) {
+                            mobileMenuToggle.classList.remove('fa-bars');
+                            mobileMenuToggle.classList.add('fa-times');
+                        } else {
+                            mobileMenuToggle.classList.remove('fa-times');
+                            mobileMenuToggle.classList.add('fa-bars');
+                        }
+                    });
+                }
+
                 initializeModeToggle();
             })
             .catch(error => console.error('Error loading navigation:', error));
     } else {
-        // Fallback for mode toggle initialization
         initializeModeToggle();
     }
 
@@ -196,6 +216,19 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.addEventListener('click', function(event) {
             if (event.target === modal) {
                 closeModal();
+            }
+        });
+
+        // Add keyboard support for closing (Escape) and navigating (Arrows)
+        document.addEventListener('keydown', function(event) {
+            if (modal.style.display === 'block') {
+                if (event.key === 'Escape') {
+                    closeModal();
+                } else if (event.key === 'ArrowLeft') {
+                    plusModalSlides(-1);
+                } else if (event.key === 'ArrowRight') {
+                    plusModalSlides(1);
+                }
             }
         });
     }
