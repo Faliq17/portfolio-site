@@ -133,13 +133,12 @@ a:hover {
     transform: translateY(-2px);
 }
 
-
+---
 /* =======================================================
- * Header & Navigation 🧭 (MODIFIED FOR RESPONSIVENESS)
+ * Header & Navigation 🧭 (FIXED FOR RESPONSIVENESS)
  * ======================================================= */
 
 header {
-    /* Use a fixed, slightly opaque background for sticky effect */
     background-color: color-mix(in srgb, var(--bg-color) 90%, transparent);
     padding: 12px 0;
     position: fixed;
@@ -164,8 +163,8 @@ nav {
     color: var(--neon-green);
 }
 
-/* Nav Icons container (Mode Toggle + Menu Toggle) */
-.nav-icons {
+/* Container for the menu and icons on the right */
+.nav-right {
     display: flex;
     align-items: center;
 }
@@ -189,14 +188,16 @@ nav {
     display: none; /* Hides the menu on small screens */
     position: absolute;
     top: 60px; /* Position right below the header */
-    left: 0;
+    right: 0; /* Align to the right side on mobile */
     width: 100%;
+    max-width: 200px; /* Limit width of mobile dropdown */
     background-color: var(--box-bg);
-    border-top: 1px solid var(--border-color);
+    border: 1px solid var(--border-color);
     box-shadow: 0 5px 10px var(--shadow-color);
     flex-direction: column;
     padding: 10px 0;
-    text-align: center;
+    text-align: right; /* Aligns text to the right in the dropdown */
+    border-radius: 5px;
 }
 
 /* Mobile Menu Active State */
@@ -215,7 +216,6 @@ nav {
     font-weight: 500;
     font-size: 1.1em;
     position: relative;
-    /* Reset padding for mobile links */
     padding-bottom: 10px;
 }
 
@@ -230,6 +230,7 @@ nav {
         background: none;
         border: none;
         box-shadow: none;
+        text-align: left; /* Reset text alignment */
     }
     .nav-menu li {
         margin-left: 30px;
@@ -239,6 +240,13 @@ nav {
     }
     .hidden-desktop {
         display: none !important; /* Hide the burger icon on desktop */
+    }
+
+    /* Ensure mode toggle is properly aligned next to the menu */
+    #mode-toggle {
+        order: -1; /* Place the mode toggle before the nav links */
+        margin-right: 20px;
+        margin-left: 0;
     }
 }
 
@@ -285,7 +293,7 @@ header nav ul li a:not(.active-link):hover::after {
     opacity: 0.5;
 }
 
-/* Mode Toggle Button (Keep existing) */
+/* Mode Toggle Button */
 #mode-toggle {
     background: none;
     border: none;
@@ -294,7 +302,6 @@ header nav ul li a:not(.active-link):hover::after {
     font-size: 1.5rem;
     padding: 0 5px;
     transition: color var(--standard-transition), transform var(--standard-transition);
-    margin-left: 20px;
 }
 
 #mode-toggle:hover {
@@ -302,7 +309,7 @@ header nav ul li a:not(.active-link):hover::after {
     transform: scale(1.1);
 }
 
-
+---
 /* =======================================================
  * Home Section (Hero) 🏠
  * ======================================================= */
@@ -382,9 +389,9 @@ header nav ul li a:not(.active-link):hover::after {
     transform: translateY(0) !important;
 }
 
-
+---
 /* =======================================================
- * Timeline Section (Experience) ⏳
+ * Timeline Section (Experience) ⏳ (MOBILE ADJUSTED)
  * ======================================================= */
 
 .timeline {
@@ -420,7 +427,7 @@ header nav ul li a:not(.active-link):hover::after {
     transform: scale(1.03) translateZ(0);
 }
 
-/* Alternating Left/Right positioning */
+/* Alternating Left/Right positioning (Desktop) */
 .timeline-item:nth-child(odd) {
     margin-left: calc(50% + 40px);
     transform: translateX(30px); /* Initial state for scroll-in */
@@ -431,7 +438,7 @@ header nav ul li a:not(.active-link):hover::after {
     transform: translateX(-30px); /* Initial state for scroll-in */
 }
 
-/* Dot on the center line */
+/* Dot on the center line (Desktop) */
 .timeline-dot {
     position: absolute;
     width: 12px;
@@ -506,7 +513,7 @@ header nav ul li a:not(.active-link):hover::after {
     }
 }
 
-
+---
 /* =======================================================
  * Skills Section 🛠️
  * ======================================================= */
@@ -563,7 +570,7 @@ header nav ul li a:not(.active-link):hover::after {
 }
 .skill-category ul li:last-child { border-bottom: none; }
 
-
+---
 /* =======================================================
  * Projects Section 📂
  * ======================================================= */
@@ -627,7 +634,7 @@ header nav ul li a:not(.active-link):hover::after {
     display: none;
 }
 
-
+---
 /* =======================================================
  * Modal Lightbox (Carousel) 🖼️
  * ======================================================= */
@@ -746,7 +753,7 @@ header nav ul li a:not(.active-link):hover::after {
     }
 }
 
-
+---
 /* =======================================================
  * Contact Section 📧
  * ======================================================= */
@@ -790,6 +797,7 @@ header nav ul li a:not(.active-link):hover::after {
     color: var(--neon-pink);
 }
 
+---
 /* =======================================================
  * Footer 🦶
  * ======================================================= */
