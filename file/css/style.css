@@ -135,12 +135,11 @@ a:hover {
 
 
 /* =======================================================
- * Header & Navigation 🧭 (FIXED FOR RESPONSIVE HAMBURGER)
+ * Header & Navigation 🧭 (FINAL RESPONSIVE VERSION)
  * ======================================================= */
 
 header {
-    background-color: rgba(var(--bg-color, 0, 0, 0), 0.9); /* Fallback for older browsers */
-    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent); /* Modern approach */
+    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent);
     padding: 12px 0;
     position: fixed;
     width: 100%;
@@ -164,13 +163,13 @@ nav {
     color: var(--neon-green);
 }
 
-/* NEW: Container for nav and icons on the right (for desktop structure) */
+/* Container for nav and icons on the right */
 .nav-right {
     display: flex;
     align-items: center;
 }
 
-/* NEW: Style for the mobile hamburger icon */
+/* Style for the mobile hamburger icon */
 .menu-toggle {
     font-size: 1.5rem;
     cursor: pointer;
@@ -183,58 +182,82 @@ nav {
     transform: scale(1.1);
 }
 
-/* NEW: Default Menu Styling (Mobile First) */
+/* Default Menu Styling (Mobile First: Slide-out from left) */
 .nav-menu {
     list-style: none;
     display: flex; /* Display is flex by default (Desktop first) */
     align-items: center;
 }
-/* Mobile Override: Hide the menu by default */
+
+/* Mobile Override: Hide the menu off-screen to the left */
 @media (max-width: 767px) {
     .nav-menu {
-        display: none; /* Hide the menu on small screens */
-        position: absolute;
-        top: 60px; /* Below header */
-        right: 0;
-        width: 100%;
-        max-width: 200px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px; /* Fixed width for the sidebar */
         background-color: var(--box-bg);
-        border: 1px solid var(--border-color);
-        box-shadow: 0 5px 10px var(--shadow-color);
+        box-shadow: 10px 0 30px var(--shadow-color);
         flex-direction: column;
-        padding: 10px 0;
-        text-align: right;
-        border-radius: 5px;
+        padding: 80px 20px 20px; /* Space for the header */
+        text-align: left;
+        transform: translateX(-100%); /* Start off-screen */
+        transition: transform var(--standard-transition);
+        z-index: 999;
+        border-radius: 0;
+    }
+    .nav-menu li {
+        margin: 0;
+        width: 100%;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .nav-menu li:last-child {
+        border-bottom: none;
+    }
+    .nav-menu li a {
+        padding: 15px 0; /* Increase link padding for better touch targets */
+        font-size: 1.2em; /* Slightly larger text */
+        display: block;
     }
 }
 
-/* Mobile Active State */
+/* Mobile Active State: Slide into view */
 .nav-menu.active-menu {
-    display: flex !important; /* Force show when clicked */
+    transform: translateX(0) !important; /* Slide into view */
 }
 
-/* NEW: Hide Hamburger on Desktop */
+/* Desktop Override: Restore desktop look */
 @media (min-width: 768px) {
+    .nav-menu {
+        /* Reset mobile styles */
+        position: static;
+        height: auto;
+        width: auto;
+        padding: 0;
+        transform: translateX(0);
+        box-shadow: none;
+        flex-direction: row;
+        border: none;
+    }
     .menu-toggle {
         display: none !important; /* Hide the hamburger icon on desktop */
     }
-    /* Re-establish desktop link margins */
     .nav-menu li {
         margin-left: 30px;
+        border-bottom: none;
+    }
+    .nav-menu li a {
+        padding-bottom: 8px;
+        font-size: 1.1em;
     }
 }
 
-nav ul li {
-    margin-left: 30px;
-}
-
+/* Common Link Styles */
 nav ul li a {
     color: var(--text-color);
     font-weight: 500;
-    font-size: 1.1em;
     position: relative;
-    /* Space for the active indicator */
-    padding-bottom: 8px;
 }
 
 /* Active Link Indicator */
@@ -461,6 +484,32 @@ header nav ul li a:not(.active-link):hover::after {
     content: "";
     display: table;
     clear: both;
+}
+
+/* --- Mobile Timeline Adjustments (Matches your screenshot) --- */
+@media (max-width: 767px) {
+    .timeline::before {
+        left: 20px; /* Move line to the left edge */
+        transform: translateX(0);
+    }
+    .timeline-item {
+        width: calc(100% - 40px); /* Full width minus padding */
+        margin-left: 40px;
+        margin-right: 0;
+        float: none;
+        transform: translateX(0); /* Reset scroll-in transform */
+    }
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even) {
+        margin-left: 40px; /* Force all items to the right of the line */
+        margin-right: 0;
+        transform: translateX(30px); /* Use a single direction for scroll-in on mobile */
+    }
+    .timeline-item:nth-child(odd) .timeline-dot,
+    .timeline-item:nth-child(even) .timeline-dot {
+        left: -29px; /* Position dot next to the new line position */
+        right: auto;
+    }
 }
 
 

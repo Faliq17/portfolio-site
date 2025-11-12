@@ -1,4 +1,4 @@
-/* --- js/script.js - REFACTORED FOR MINIMAL & CORRECT RESPONSIVENESS --- */
+/* --- js/script.js - FINAL MODIFIED VERSION --- */
 
 (function() {
     "use strict";
@@ -90,7 +90,7 @@
                 headerElement.innerHTML = html;
                 setActiveLink(headerElement);
                 initializeModeToggle();
-                initializeMobileMenu(); // <--- NEW: Initialize mobile menu logic
+                initializeMobileMenu(); // Initialize mobile menu logic
             })
             .catch(error => {
                 console.error('Error loading navigation:', error);
@@ -98,7 +98,7 @@
             });
     }
 
-    // NEW FUNCTION: Mobile Menu Toggle Logic
+    // Mobile Menu Toggle Logic
     /**
      * Adds an event listener to the mobile menu toggle button.
      */
@@ -108,24 +108,39 @@
 
         if (toggleBtn && navMenu) {
             toggleBtn.addEventListener('click', () => {
+                const isMenuOpen = navMenu.classList.contains('active-menu');
+
                 navMenu.classList.toggle('active-menu');
 
                 // Toggle icon between bars and close (X)
-                const isMenuOpen = navMenu.classList.contains('active-menu');
-                // Note: The 'hidden-desktop' class is no longer necessary as it's handled by pure CSS now,
-                // but we use 'menu-toggle' class to style it.
-                toggleBtn.className = isMenuOpen ? 'fas fa-times menu-toggle' : 'fas fa-bars menu-toggle';
+                toggleBtn.className = isMenuOpen ? 'fas fa-bars menu-toggle' : 'fas fa-times menu-toggle';
+
+                // Prevent background scrolling when menu is open
+                document.body.style.overflow = isMenuOpen ? 'auto' : 'hidden';
             });
 
             // Close menu when a link is clicked (in mobile view)
             navMenu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
-                    // Assuming mobile breakpoint is 768px (same as CSS media query)
+                    // Only close if it's a mobile screen size
                     if (window.innerWidth < 768) {
                         navMenu.classList.remove('active-menu');
                         toggleBtn.className = 'fas fa-bars menu-toggle'; // Reset icon
+                        document.body.style.overflow = 'auto'; // Restore scrolling
                     }
                 });
+            });
+
+            // Close menu if a user clicks outside of it (on a background area)
+            document.addEventListener('click', (event) => {
+                // Check if the click is outside the nav-menu and not on the toggle button itself
+                if (window.innerWidth < 768 && navMenu.classList.contains('active-menu') &&
+                    !navMenu.contains(event.target) && !toggleBtn.contains(event.target)) {
+
+                    navMenu.classList.remove('active-menu');
+                    toggleBtn.className = 'fas fa-bars menu-toggle';
+                    document.body.style.overflow = 'auto';
+                }
             });
         }
     }
