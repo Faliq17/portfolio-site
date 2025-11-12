@@ -449,7 +449,7 @@ header nav ul li a:not(.active-link):hover::after {
     z-index: 1;
 }
 .timeline-item:nth-child(odd) .timeline-dot {
-    left: -30px; /* Center dot on the line */
+    left: -29px; /* Center dot on the line */
 }
 .timeline-item:nth-child(even) .timeline-dot {
     right: -31px; /* Center dot on the line */
@@ -507,7 +507,7 @@ header nav ul li a:not(.active-link):hover::after {
     }
     .timeline-item:nth-child(odd) .timeline-dot,
     .timeline-item:nth-child(even) .timeline-dot {
-        left: -25px; /* Position dot next to the new line position */
+        left: -15px; /* Position dot next to the new line position */
         right: auto;
     }
 }
