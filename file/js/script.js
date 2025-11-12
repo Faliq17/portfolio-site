@@ -1,4 +1,4 @@
-/* --- js/script.js - REFACTORED FOR MODULARITY AND PERFORMANCE --- */
+/* --- js/script.js - REFACTORED FOR MINIMAL & CORRECT RESPONSIVENESS --- */
 
 (function() {
     "use strict";
@@ -75,7 +75,6 @@
     function loadNavigation() {
         const headerElement = document.getElementById('site-header');
         if (!headerElement) {
-            // If no header container, just initialize mode toggle
             initializeModeToggle();
             return;
         }
@@ -90,14 +89,47 @@
             .then(html => {
                 headerElement.innerHTML = html;
                 setActiveLink(headerElement);
-                // Initialize the mode toggle functionality now that the button exists in the DOM
                 initializeModeToggle();
+                initializeMobileMenu(); // <--- NEW: Initialize mobile menu logic
             })
             .catch(error => {
                 console.error('Error loading navigation:', error);
-                initializeModeToggle(); // Fallback for mode toggle
+                initializeModeToggle();
             });
     }
+
+    // NEW FUNCTION: Mobile Menu Toggle Logic
+    /**
+     * Adds an event listener to the mobile menu toggle button.
+     */
+    function initializeMobileMenu() {
+        const toggleBtn = document.getElementById('mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        if (toggleBtn && navMenu) {
+            toggleBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('active-menu');
+
+                // Toggle icon between bars and close (X)
+                const isMenuOpen = navMenu.classList.contains('active-menu');
+                // Note: The 'hidden-desktop' class is no longer necessary as it's handled by pure CSS now,
+                // but we use 'menu-toggle' class to style it.
+                toggleBtn.className = isMenuOpen ? 'fas fa-times menu-toggle' : 'fas fa-bars menu-toggle';
+            });
+
+            // Close menu when a link is clicked (in mobile view)
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    // Assuming mobile breakpoint is 768px (same as CSS media query)
+                    if (window.innerWidth < 768) {
+                        navMenu.classList.remove('active-menu');
+                        toggleBtn.className = 'fas fa-bars menu-toggle'; // Reset icon
+                    }
+                });
+            });
+        }
+    }
+
 
     /**
      * Sets the 'active-link' class based on the current page path.
@@ -255,4 +287,4 @@
         }
     });
 
-})(); // End of IIFE
+})();

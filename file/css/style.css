@@ -133,13 +133,14 @@ a:hover {
     transform: translateY(-2px);
 }
 
----
+
 /* =======================================================
- * Header & Navigation 🧭 (FIXED FOR RESPONSIVENESS)
+ * Header & Navigation 🧭 (FIXED FOR RESPONSIVE HAMBURGER)
  * ======================================================= */
 
 header {
-    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent);
+    background-color: rgba(var(--bg-color, 0, 0, 0), 0.9); /* Fallback for older browsers */
+    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent); /* Modern approach */
     padding: 12px 0;
     position: fixed;
     width: 100%;
@@ -163,13 +164,13 @@ nav {
     color: var(--neon-green);
 }
 
-/* Container for the menu and icons on the right */
+/* NEW: Container for nav and icons on the right (for desktop structure) */
 .nav-right {
     display: flex;
     align-items: center;
 }
 
-/* Mobile Menu Toggle Icon */
+/* NEW: Style for the mobile hamburger icon */
 .menu-toggle {
     font-size: 1.5rem;
     cursor: pointer;
@@ -182,99 +183,73 @@ nav {
     transform: scale(1.1);
 }
 
-/* Default Menu Styling (Mobile First - Hidden by default) */
+/* NEW: Default Menu Styling (Mobile First) */
 .nav-menu {
     list-style: none;
-    display: none; /* Hides the menu on small screens */
-    position: absolute;
-    top: 60px; /* Position right below the header */
-    right: 0; /* Align to the right side on mobile */
-    width: 100%;
-    max-width: 200px; /* Limit width of mobile dropdown */
-    background-color: var(--box-bg);
-    border: 1px solid var(--border-color);
-    box-shadow: 0 5px 10px var(--shadow-color);
-    flex-direction: column;
-    padding: 10px 0;
-    text-align: right; /* Aligns text to the right in the dropdown */
-    border-radius: 5px;
+    display: flex; /* Display is flex by default (Desktop first) */
+    align-items: center;
+}
+/* Mobile Override: Hide the menu by default */
+@media (max-width: 767px) {
+    .nav-menu {
+        display: none; /* Hide the menu on small screens */
+        position: absolute;
+        top: 60px; /* Below header */
+        right: 0;
+        width: 100%;
+        max-width: 200px;
+        background-color: var(--box-bg);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 5px 10px var(--shadow-color);
+        flex-direction: column;
+        padding: 10px 0;
+        text-align: right;
+        border-radius: 5px;
+    }
 }
 
-/* Mobile Menu Active State */
+/* Mobile Active State */
 .nav-menu.active-menu {
-    display: flex; /* Show the menu when active */
+    display: flex !important; /* Force show when clicked */
 }
 
-.nav-menu li {
-    margin: 0; /* Remove desktop margin */
+/* NEW: Hide Hamburger on Desktop */
+@media (min-width: 768px) {
+    .menu-toggle {
+        display: none !important; /* Hide the hamburger icon on desktop */
+    }
+    /* Re-establish desktop link margins */
+    .nav-menu li {
+        margin-left: 30px;
+    }
 }
 
-.nav-menu li a {
-    display: block;
-    padding: 10px 20px;
+nav ul li {
+    margin-left: 30px;
+}
+
+nav ul li a {
     color: var(--text-color);
     font-weight: 500;
     font-size: 1.1em;
     position: relative;
-    padding-bottom: 10px;
+    /* Space for the active indicator */
+    padding-bottom: 8px;
 }
 
-/* Desktop-only styles (using a media query) */
-@media (min-width: 768px) {
-    .nav-menu {
-        /* Reset for desktop view */
-        position: static;
-        display: flex;
-        flex-direction: row;
-        width: auto;
-        background: none;
-        border: none;
-        box-shadow: none;
-        text-align: left; /* Reset text alignment */
-    }
-    .nav-menu li {
-        margin-left: 30px;
-    }
-    .nav-menu li a {
-        padding-bottom: 8px; /* Restore desktop padding */
-    }
-    .hidden-desktop {
-        display: none !important; /* Hide the burger icon on desktop */
-    }
-
-    /* Ensure mode toggle is properly aligned next to the menu */
-    #mode-toggle {
-        order: -1; /* Place the mode toggle before the nav links */
-        margin-right: 20px;
-        margin-left: 0;
-    }
-}
-
-/* Active Link Indicator - Apply to both mobile and desktop */
+/* Active Link Indicator */
 header nav ul li a::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 50%; /* Center the indicator */
-    transform: translateX(-50%) scaleX(0); /* Center and hide */
+    left: 0;
     width: 100%;
-    max-width: 50px; /* Constrain indicator width on desktop */
     height: 3px;
     background-color: var(--neon-pink);
     border-radius: 2px;
-    transform-origin: center;
+    transform: scaleX(0);
+    transform-origin: left;
     transition: transform var(--standard-transition);
-}
-
-/* Mobile Specific adjustments to indicator */
-@media (max-width: 767px) {
-    header nav ul li a::after {
-        max-width: 40%; /* Shorter indicator for mobile */
-    }
-    /* Mobile-specific hover/active link styling */
-    .nav-menu li a:hover {
-        background-color: var(--border-color);
-    }
 }
 
 .active-link {
@@ -284,12 +259,12 @@ header nav ul li a::after {
 
 /* Show indicator only on the active link */
 header nav ul li a.active-link::after {
-    transform: translateX(-50%) scaleX(1);
+    transform: scaleX(1);
 }
 
-/* Optional: Hover effect (adjusting the existing one) */
+/* Optional: Hover effect */
 header nav ul li a:not(.active-link):hover::after {
-    transform: translateX(-50%) scaleX(0.5);
+    transform: scaleX(0.5);
     opacity: 0.5;
 }
 
@@ -302,6 +277,7 @@ header nav ul li a:not(.active-link):hover::after {
     font-size: 1.5rem;
     padding: 0 5px;
     transition: color var(--standard-transition), transform var(--standard-transition);
+    margin-left: 20px;
 }
 
 #mode-toggle:hover {
@@ -309,7 +285,7 @@ header nav ul li a:not(.active-link):hover::after {
     transform: scale(1.1);
 }
 
----
+
 /* =======================================================
  * Home Section (Hero) 🏠
  * ======================================================= */
@@ -389,9 +365,9 @@ header nav ul li a:not(.active-link):hover::after {
     transform: translateY(0) !important;
 }
 
----
+
 /* =======================================================
- * Timeline Section (Experience) ⏳ (MOBILE ADJUSTED)
+ * Timeline Section (Experience) ⏳
  * ======================================================= */
 
 .timeline {
@@ -427,7 +403,7 @@ header nav ul li a:not(.active-link):hover::after {
     transform: scale(1.03) translateZ(0);
 }
 
-/* Alternating Left/Right positioning (Desktop) */
+/* Alternating Left/Right positioning */
 .timeline-item:nth-child(odd) {
     margin-left: calc(50% + 40px);
     transform: translateX(30px); /* Initial state for scroll-in */
@@ -438,7 +414,7 @@ header nav ul li a:not(.active-link):hover::after {
     transform: translateX(-30px); /* Initial state for scroll-in */
 }
 
-/* Dot on the center line (Desktop) */
+/* Dot on the center line */
 .timeline-dot {
     position: absolute;
     width: 12px;
@@ -487,33 +463,7 @@ header nav ul li a:not(.active-link):hover::after {
     clear: both;
 }
 
-/* --- Mobile Timeline Adjustments --- */
-@media (max-width: 767px) {
-    .timeline::before {
-        left: 20px; /* Move line to the left edge */
-        transform: translateX(0);
-    }
-    .timeline-item {
-        width: calc(100% - 40px); /* Full width minus padding */
-        margin-left: 40px;
-        margin-right: 0;
-        float: none;
-        transform: translateX(0); /* Reset scroll-in transform */
-    }
-    .timeline-item:nth-child(odd),
-    .timeline-item:nth-child(even) {
-        margin-left: 40px; /* Force all items to the right of the line */
-        margin-right: 0;
-        transform: translateX(30px); /* Use a single direction for scroll-in on mobile */
-    }
-    .timeline-item:nth-child(odd) .timeline-dot,
-    .timeline-item:nth-child(even) .timeline-dot {
-        left: -29px; /* Position dot next to the new line position */
-        right: auto;
-    }
-}
 
----
 /* =======================================================
  * Skills Section 🛠️
  * ======================================================= */
@@ -570,7 +520,7 @@ header nav ul li a:not(.active-link):hover::after {
 }
 .skill-category ul li:last-child { border-bottom: none; }
 
----
+
 /* =======================================================
  * Projects Section 📂
  * ======================================================= */
@@ -634,7 +584,7 @@ header nav ul li a:not(.active-link):hover::after {
     display: none;
 }
 
----
+
 /* =======================================================
  * Modal Lightbox (Carousel) 🖼️
  * ======================================================= */
@@ -657,16 +607,6 @@ header nav ul li a:not(.active-link):hover::after {
     to {transform: translate(-50%, -50%) scale(1);}
 }
 
-.modal-content-wrapper {
-    position: relative;
-    width: 90%;
-    max-width: 1000px;
-    height: 85vh;
-    margin: auto;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
 .modal-content {
     margin: auto;
     display: block;
@@ -676,8 +616,7 @@ header nav ul li a:not(.active-link):hover::after {
     /* Use translate3d for GPU acceleration */
     transform: translate(-50%, -50%);
 
-    width: 100%;
-    height: 100%;
+    width: 90%;
     max-width: 1000px;
     max-height: 85vh;
     object-fit: contain;
@@ -686,17 +625,18 @@ header nav ul li a:not(.active-link):hover::after {
     animation-duration: 0.4s; /* Faster animation */
 }
 
-#caption {
+.caption-container {
     text-align: center;
     color: #ccc;
-    padding: 10px 0 0 0;
+    padding: 10px;
+    max-width: 1000px;
+    margin: 0 auto;
     position: absolute;
-    bottom: -30px;
+    top: calc(50% + (85vh / 2) + 20px); /* Positioning below the image */
     left: 50%;
     transform: translateX(-50%);
     z-index: 2002;
     font-size: 1.1em;
-    width: 100%;
 }
 
 
@@ -743,17 +683,9 @@ header nav ul li a:not(.active-link):hover::after {
         margin-top: -30px;
         font-size: 16px;
     }
-    .close-btn {
-        top: 5px;
-        right: 15px;
-        font-size: 30px;
-    }
-    .modal-content-wrapper {
-        height: 75vh;
-    }
 }
 
----
+
 /* =======================================================
  * Contact Section 📧
  * ======================================================= */
@@ -797,7 +729,6 @@ header nav ul li a:not(.active-link):hover::after {
     color: var(--neon-pink);
 }
 
----
 /* =======================================================
  * Footer 🦶
  * ======================================================= */
