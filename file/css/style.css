@@ -507,7 +507,7 @@ header nav ul li a:not(.active-link):hover::after {
     }
     .timeline-item:nth-child(odd) .timeline-dot,
     .timeline-item:nth-child(even) .timeline-dot {
-        left: -50px; /* Position dot next to the new line position */
+        left: -45px; /* Position dot next to the new line position */
         right: auto;
     }
 }
