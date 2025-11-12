@@ -135,12 +135,12 @@ a:hover {
 
 
 /* =======================================================
- * Header & Navigation 🧭
+ * Header & Navigation 🧭 (MODIFIED FOR RESPONSIVENESS)
  * ======================================================= */
 
 header {
-    background-color: rgba(var(--bg-color, 0, 0, 0), 0.9); /* Fallback for older browsers */
-    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent); /* Modern approach */
+    /* Use a fixed, slightly opaque background for sticky effect */
+    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent);
     padding: 12px 0;
     position: fixed;
     width: 100%;
@@ -164,38 +164,109 @@ nav {
     color: var(--neon-green);
 }
 
-nav ul {
-    list-style: none;
+/* Nav Icons container (Mode Toggle + Menu Toggle) */
+.nav-icons {
     display: flex;
     align-items: center;
 }
 
-nav ul li {
-    margin-left: 30px;
+/* Mobile Menu Toggle Icon */
+.menu-toggle {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+    margin-left: 15px;
+    transition: color var(--standard-transition), transform var(--standard-transition);
+}
+.menu-toggle:hover {
+    color: var(--neon-pink);
+    transform: scale(1.1);
 }
 
-nav ul li a {
+/* Default Menu Styling (Mobile First - Hidden by default) */
+.nav-menu {
+    list-style: none;
+    display: none; /* Hides the menu on small screens */
+    position: absolute;
+    top: 60px; /* Position right below the header */
+    left: 0;
+    width: 100%;
+    background-color: var(--box-bg);
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 5px 10px var(--shadow-color);
+    flex-direction: column;
+    padding: 10px 0;
+    text-align: center;
+}
+
+/* Mobile Menu Active State */
+.nav-menu.active-menu {
+    display: flex; /* Show the menu when active */
+}
+
+.nav-menu li {
+    margin: 0; /* Remove desktop margin */
+}
+
+.nav-menu li a {
+    display: block;
+    padding: 10px 20px;
     color: var(--text-color);
     font-weight: 500;
     font-size: 1.1em;
     position: relative;
-    /* Space for the active indicator */
-    padding-bottom: 8px;
+    /* Reset padding for mobile links */
+    padding-bottom: 10px;
 }
 
-/* Active Link Indicator */
+/* Desktop-only styles (using a media query) */
+@media (min-width: 768px) {
+    .nav-menu {
+        /* Reset for desktop view */
+        position: static;
+        display: flex;
+        flex-direction: row;
+        width: auto;
+        background: none;
+        border: none;
+        box-shadow: none;
+    }
+    .nav-menu li {
+        margin-left: 30px;
+    }
+    .nav-menu li a {
+        padding-bottom: 8px; /* Restore desktop padding */
+    }
+    .hidden-desktop {
+        display: none !important; /* Hide the burger icon on desktop */
+    }
+}
+
+/* Active Link Indicator - Apply to both mobile and desktop */
 header nav ul li a::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 0;
+    left: 50%; /* Center the indicator */
+    transform: translateX(-50%) scaleX(0); /* Center and hide */
     width: 100%;
+    max-width: 50px; /* Constrain indicator width on desktop */
     height: 3px;
     background-color: var(--neon-pink);
     border-radius: 2px;
-    transform: scaleX(0);
-    transform-origin: left;
+    transform-origin: center;
     transition: transform var(--standard-transition);
+}
+
+/* Mobile Specific adjustments to indicator */
+@media (max-width: 767px) {
+    header nav ul li a::after {
+        max-width: 40%; /* Shorter indicator for mobile */
+    }
+    /* Mobile-specific hover/active link styling */
+    .nav-menu li a:hover {
+        background-color: var(--border-color);
+    }
 }
 
 .active-link {
@@ -205,16 +276,16 @@ header nav ul li a::after {
 
 /* Show indicator only on the active link */
 header nav ul li a.active-link::after {
-    transform: scaleX(1);
+    transform: translateX(-50%) scaleX(1);
 }
 
-/* Optional: Hover effect */
+/* Optional: Hover effect (adjusting the existing one) */
 header nav ul li a:not(.active-link):hover::after {
-    transform: scaleX(0.5);
+    transform: translateX(-50%) scaleX(0.5);
     opacity: 0.5;
 }
 
-/* Mode Toggle Button */
+/* Mode Toggle Button (Keep existing) */
 #mode-toggle {
     background: none;
     border: none;
@@ -409,6 +480,32 @@ header nav ul li a:not(.active-link):hover::after {
     clear: both;
 }
 
+/* --- Mobile Timeline Adjustments --- */
+@media (max-width: 767px) {
+    .timeline::before {
+        left: 20px; /* Move line to the left edge */
+        transform: translateX(0);
+    }
+    .timeline-item {
+        width: calc(100% - 40px); /* Full width minus padding */
+        margin-left: 40px;
+        margin-right: 0;
+        float: none;
+        transform: translateX(0); /* Reset scroll-in transform */
+    }
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even) {
+        margin-left: 40px; /* Force all items to the right of the line */
+        margin-right: 0;
+        transform: translateX(30px); /* Use a single direction for scroll-in on mobile */
+    }
+    .timeline-item:nth-child(odd) .timeline-dot,
+    .timeline-item:nth-child(even) .timeline-dot {
+        left: -29px; /* Position dot next to the new line position */
+        right: auto;
+    }
+}
+
 
 /* =======================================================
  * Skills Section 🛠️
@@ -553,6 +650,16 @@ header nav ul li a:not(.active-link):hover::after {
     to {transform: translate(-50%, -50%) scale(1);}
 }
 
+.modal-content-wrapper {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    height: 85vh;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .modal-content {
     margin: auto;
     display: block;
@@ -562,7 +669,8 @@ header nav ul li a:not(.active-link):hover::after {
     /* Use translate3d for GPU acceleration */
     transform: translate(-50%, -50%);
 
-    width: 90%;
+    width: 100%;
+    height: 100%;
     max-width: 1000px;
     max-height: 85vh;
     object-fit: contain;
@@ -571,18 +679,17 @@ header nav ul li a:not(.active-link):hover::after {
     animation-duration: 0.4s; /* Faster animation */
 }
 
-.caption-container {
+#caption {
     text-align: center;
     color: #ccc;
-    padding: 10px;
-    max-width: 1000px;
-    margin: 0 auto;
+    padding: 10px 0 0 0;
     position: absolute;
-    top: calc(50% + (85vh / 2) + 20px); /* Positioning below the image */
+    bottom: -30px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2002;
     font-size: 1.1em;
+    width: 100%;
 }
 
 
@@ -628,6 +735,14 @@ header nav ul li a:not(.active-link):hover::after {
         padding: 10px;
         margin-top: -30px;
         font-size: 16px;
+    }
+    .close-btn {
+        top: 5px;
+        right: 15px;
+        font-size: 30px;
+    }
+    .modal-content-wrapper {
+        height: 75vh;
     }
 }
 
